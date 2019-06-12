@@ -36,7 +36,7 @@ function CharacterStats (attributes) {
   this.healthPoints = attributes.healthPoints
 }
 CharacterStats.prototype = Object.create(GameObject.prototype)
-CharacterStats.prototype.takeDamage = function(attributes) {
+CharacterStats.prototype.takeDamage = function() {
   return `${this.name} took damage.`
 }
 
@@ -57,7 +57,7 @@ function Humanoid (attributes) {
   this.language = attributes.language
 }
 Humanoid.prototype = Object.create(CharacterStats.prototype)
-Humanoid.prototype.greet = function (attributes) {
+Humanoid.prototype.greet = function () {
   return `${this.name} offers a greeting in ${this.language}.`
 }
 
@@ -140,12 +140,54 @@ Humanoid.prototype.greet = function (attributes) {
 
   function Hero(attributes) {
     Humanoid.call(this, attributes)
-    this.awakenPowers = attributes.awakenPowers
+    this.highground = attributes.highground
+    this.awakenPower = attributes.awakenPower
   }
   Hero.prototype = Object.create(Humanoid.prototype)
+  Hero.prototype.apDMG = function (victim) {
+    return `${this.name} does 7 damage to ${victim.name}`
+  }
 
   function Villain(attributes) {
     Humanoid.call(this, attributes)
+    this.lowground = attributes.lowground
     this.ultimatePower = attributes.ultimatePower
   }
   Villain.prototype = Object.create(Humanoid.prototype)
+
+  const gandaldore = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 2,
+      height: 4,
+    },
+    healthPoints: 25,
+    name: 'Gandaldore',
+    team: 'Middle-wartz',
+    weapons: [
+      'Wand',
+      'Ring',
+    ],
+    language: 'Common',
+    highground: true,
+    awakenPower: 'Hakuna Matata'
+  })
+
+  const varthdader= new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 2,
+      height: 4,
+    },
+    healthPoints: 50,
+    name: 'Varth Dader',
+    team: 'Empire',
+    weapons: [
+      'Laser-sword',
+    ],
+    language: 'English (Bane)',
+    lowground: true,
+    ultimatePower: 'Quantum Storm'
+  })
