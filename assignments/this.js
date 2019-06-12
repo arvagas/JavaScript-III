@@ -4,7 +4,7 @@
 * 1. Global binding - value will be the console/window object.
 * 2. Implicit binding - a function that is called by a preceding dot(similar to a method being called). this refers to the parameter given.
 * 3. New binding - Utilizes the new keyword along with a constructor function.
-* 4. Explicit binding - When Javascript's .call or .apply methods are used.
+* 4. Explicit binding - When Javascript's .call .apply or .bind methods are used. bind is the only one that is used to create an entire new function
 *
 * write out a code example of each explanation above
 */
@@ -43,8 +43,16 @@ doggo.facts()
 
 // Principle 4
 // code example for Explicit Binding
-// Using the previous example
+function favoriteCars(car1, car2, car3){
+    console.log(`${this.name}'s favorite car manufactories are ${car1}, ${car2}, and ${car3}.`)
+}
 
-const kitteh = new AnimalPets("Cat", "Pursia")
-doggo.facts.call(kitteh)
-kitteh.facts.apply(doggo)
+const sally = {
+    name: 'Sally'
+}
+const cars = ['Honda', 'Subaru', 'BMW']
+
+favoriteCars.call(sally, cars[0], cars[1], cars[2])
+favoriteCars.apply(sally, cars)
+const nuSally = favoriteCars.bind(sally, cars[0], cars[1], cars[2])
+nuSally()
