@@ -121,16 +121,16 @@ Humanoid.prototype.greet = function () {
     language: 'Elvish',
   });
 
-  console.log(mage.createdAt); // Today's date
-  console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-  console.log(swordsman.healthPoints); // 15
-  console.log(mage.name); // Bruce
-  console.log(swordsman.team); // The Round Table
-  console.log(mage.weapons); // Staff of Shamalama
-  console.log(archer.language); // Elvish
-  console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-  console.log(mage.takeDamage()); // Bruce took damage.
-  console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+  // console.log(mage.createdAt); // Today's date
+  // console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
+  // console.log(swordsman.healthPoints); // 15
+  // console.log(mage.name); // Bruce
+  // console.log(swordsman.team); // The Round Table
+  // console.log(mage.weapons); // Staff of Shamalama
+  // console.log(archer.language); // Elvish
+  // console.log(archer.greet()); // Lilith offers a greeting in Elvish.
+  // console.log(mage.takeDamage()); // Bruce took damage.
+  // console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
 
   // Stretch task: 
@@ -145,8 +145,9 @@ Humanoid.prototype.greet = function () {
   }
   Hero.prototype = Object.create(Humanoid.prototype)
   Hero.prototype.apDMG = function (victim) {
-    return `${this.name} does 7 damage to ${victim.name}`
+    return `${this.name} does 18 damage to ${victim.name}`
   }
+
 
   function Villain(attributes) {
     Humanoid.call(this, attributes)
@@ -154,27 +155,31 @@ Humanoid.prototype.greet = function () {
     this.ultimatePower = attributes.ultimatePower
   }
   Villain.prototype = Object.create(Humanoid.prototype)
+  Villain.prototype.upDMG = function (victim) {
+    return `${this.name} does 10 damage to ${victim.name}`
+  }
 
-  const gandaldore = new Hero({
+
+  const hero = new Hero({
     createdAt: new Date(),
     dimensions: {
       length: 1,
       width: 2,
       height: 4,
     },
-    healthPoints: 25,
+    healthPoints: 31,
     name: 'Gandaldore',
     team: 'Middle-wartz',
     weapons: [
       'Wand',
       'Ring',
     ],
-    language: 'Common',
+    language: 'Klingon',
     highground: true,
     awakenPower: 'Hakuna Matata'
   })
 
-  const varthdader= new Villain({
+  const vill = new Villain({
     createdAt: new Date(),
     dimensions: {
       length: 1,
@@ -187,7 +192,15 @@ Humanoid.prototype.greet = function () {
     weapons: [
       'Laser-sword',
     ],
-    language: 'English (Bane)',
+    language: 'Dothraki',
     lowground: true,
-    ultimatePower: 'Quantum Storm'
+    ultimatePower: 'Quantum Solace'
   })
+
+  console.log(`${hero.name} and ${vill.name} meet on the battlefield.`)
+  console.log(hero.greet())
+  console.log(vill.greet())
+  console.log(`${vill.name} casts ${vill.ultimatePower}.`)
+  console.log(vill.upDMG(hero))
+  console.log(`${hero.name} casts ${hero.awakenPower}.`)
+  console.log(hero.apDMG(vill))
