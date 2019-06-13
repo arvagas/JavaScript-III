@@ -15,6 +15,15 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
+function GameObject (attributes) {
+  this.createdAt = attributes.createdAt
+  this.name = attributes.name
+  this.dimensions = attributes.dimensions
+}
+GameObject.prototype.destroy = function () {
+  return `${this.name} was removed from the game.`
+}
+
 
 /*
   === CharacterStats ===
@@ -22,6 +31,15 @@
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+function CharacterStats (attributes) {
+  GameObject.call(this, attributes)
+  this.healthPoints = attributes.healthPoints
+}
+CharacterStats.prototype = Object.create(GameObject.prototype)
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`
+}
+
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,6 +50,17 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
+function Humanoid (attributes) {
+  CharacterStats.call(this, attributes)
+  this.team = attributes.team
+  this.weapons = attributes.weapons
+  this.language = attributes.language
+}
+Humanoid.prototype = Object.create(CharacterStats.prototype)
+Humanoid.prototype.greet = function () {
+  return `${this.name} offers a greeting in ${this.language}.`
+}
+
  
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -41,7 +70,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -92,19 +121,86 @@
     language: 'Elvish',
   });
 
-  console.log(mage.createdAt); // Today's date
-  console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-  console.log(swordsman.healthPoints); // 15
-  console.log(mage.name); // Bruce
-  console.log(swordsman.team); // The Round Table
-  console.log(mage.weapons); // Staff of Shamalama
-  console.log(archer.language); // Elvish
-  console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-  console.log(mage.takeDamage()); // Bruce took damage.
-  console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+  // console.log(mage.createdAt); // Today's date
+  // console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
+  // console.log(swordsman.healthPoints); // 15
+  // console.log(mage.name); // Bruce
+  // console.log(swordsman.team); // The Round Table
+  // console.log(mage.weapons); // Staff of Shamalama
+  // console.log(archer.language); // Elvish
+  // console.log(archer.greet()); // Lilith offers a greeting in Elvish.
+  // console.log(mage.takeDamage()); // Bruce took damage.
+  // console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  function Hero(attributes) {
+    Humanoid.call(this, attributes)
+    this.highground = attributes.highground
+    this.awakenPower = attributes.awakenPower
+  }
+  Hero.prototype = Object.create(Humanoid.prototype)
+  Hero.prototype.apDMG = function (victim) {
+    return `${this.name} does 18 damage to ${victim.name}`
+  }
+
+
+  function Villain(attributes) {
+    Humanoid.call(this, attributes)
+    this.lowground = attributes.lowground
+    this.ultimatePower = attributes.ultimatePower
+  }
+  Villain.prototype = Object.create(Humanoid.prototype)
+  Villain.prototype.upDMG = function (victim) {
+    return `${this.name} does 10 damage to ${victim.name}`
+  }
+
+
+  const hero = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 2,
+      height: 4,
+    },
+    healthPoints: 31,
+    name: 'Gandaldore',
+    team: 'Middle-wartz',
+    weapons: [
+      'Wand',
+      'Ring',
+    ],
+    language: 'Klingon',
+    highground: true,
+    awakenPower: 'Hakuna Matata'
+  })
+
+  const vill = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 2,
+      height: 4,
+    },
+    healthPoints: 50,
+    name: 'Varth Dader',
+    team: 'Empire',
+    weapons: [
+      'Laser-sword',
+    ],
+    language: 'Dothraki',
+    lowground: true,
+    ultimatePower: 'Quantum Solace'
+  })
+
+  console.log(`${hero.name} and ${vill.name} meet on the battlefield.`)
+  console.log(hero.greet())
+  console.log(vill.greet())
+  console.log(`${vill.name} casts ${vill.ultimatePower}.`)
+  console.log(vill.upDMG(hero))
+  console.log(`${hero.name} casts ${hero.awakenPower}.`)
+  console.log(hero.apDMG(vill))
